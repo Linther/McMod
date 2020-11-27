@@ -39,7 +39,8 @@ public class GlockMod
         MinecraftForge.EVENT_BUS.register(this);
 
         //register new things?
-        ModInitializer.loadAllMods();
+        ModInitializer modInitializer = new ModInitializer("ModList.json");
+        modInitializer.loadAllMods();
     }
 
     private void setup(final FMLCommonSetupEvent event)

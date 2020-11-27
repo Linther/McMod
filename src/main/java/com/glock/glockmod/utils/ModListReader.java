@@ -6,7 +6,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class ModListReader {
     String fileLocation;
@@ -17,12 +19,14 @@ public class ModListReader {
         this.fileLocation = fileLocation;
         JSONParser parser = new JSONParser();
         try {
-            Object obj = parser.parse(new FileReader("ModList.json"));
+            ClassLoader cl = getClass().getClassLoader();
+            Object obj = parser.parse(new InputStreamReader(cl.getResourceAsStream(fileLocation)));
             JSONObject jsonObject = (JSONObject) obj;
 
-            JSONArray modList = (JSONArray) jsonObject.get("Mod List");
+            JSONArray modList = (JSONArray) jsonObject.get("ModList");
             this.iterator = modList.iterator();
         } catch (Exception e){
+            System.out.println("UH OH!");
             e.printStackTrace();
         }
     }
@@ -31,7 +35,7 @@ public class ModListReader {
         if (iterator == null){
             return null;
         }
-        return iterator.next().get("ModName").toString();
+        return iterator.next().get("PackageName").toString();
     }
 
     public Boolean hasNextMod(){
